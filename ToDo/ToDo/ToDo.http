@@ -1,0 +1,6 @@
+@ToDo_HostAddress = http://localhost:5044
+
+GET {{ToDo_HostAddress}}/ToDo/
+Accept: application/json
+
+###
