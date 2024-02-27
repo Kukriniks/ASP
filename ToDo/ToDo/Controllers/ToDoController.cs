@@ -37,7 +37,7 @@ namespace ToDo.Controllers
 		[ProducesResponseType<ToDoNode>(StatusCodes.Status200OK)]
 		public ActionResult<List<ToDoNode>> Get(int limit, int offset)
 		{
-			var todo = ToDoList.ToDoLists.Skip(offset - 1).Take(limit).ToList();
+			var todo = ToDoList.ToDoLists.Skip(offset).Take(limit).ToList();
 			return todo == null ? NotFound() : todo;
 		}
 
@@ -73,10 +73,8 @@ namespace ToDo.Controllers
 				id = ToDoList.ToDoLists.Select(l => l.Id).Max() + 1;
 			}
 			ToDoNode node = new ToDoNode(id, value.Label, value.IsDone, createdDate: time, updatedDate: time);
-			ToDoList.ToDoLists.Add(node);
-			var location = Url.Action(nameof(Post), new { id = node.Id }) ?? $"/{node.Id}";
+			ToDoList.ToDoLists.Add(node);			
 			return Created($"/api/ToDo/{id}", node); //Спросить !
-
 		}
 
 		// DELETE /todos/{id} - удалить запись 
@@ -93,7 +91,6 @@ namespace ToDo.Controllers
 			ToDoList.ToDoLists.Remove(todo);
 			return todo;
 		}
-
 
 		//PUT /todos/{id} - обновить запись, вернуть обновленную запись. Обновить поле UpdatedDate текущим UTC временем. Не обновлять поля CreatedDate и UpdatedDate данными от клиентской стороны 
 		[HttpPut("{id}")]
