@@ -1,5 +1,5 @@
 ﻿
-namespace ToDo.ToDo.Models
+namespace ToDo.Models
 {
 	public interface IToDoNode
 	{		

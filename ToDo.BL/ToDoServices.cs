@@ -1,10 +1,11 @@
-﻿namespace ToDo.ToDo.Services
-{
-	using global::ToDo.ToDo.Repositories;
-	using System.Collections.Generic;
-    using ToDo.Models;
+﻿using ToDo.Repositories;
+using ToDo.Models;
 
-    public class ToDoServices : IToDoServices
+namespace ToDo.BL
+{
+	using System.Collections.Generic;
+
+	public class ToDoServices : IToDoServices
     {
         private readonly IToDoRepository _todorepository;
 		private readonly IUserRepository _userRepository;
@@ -13,7 +14,6 @@
         {
             _todorepository = toDoRepository;
 			_userRepository = userRepository;
-
 		}
 
 		public IToDoNode AddToDo(IToDoNode node)

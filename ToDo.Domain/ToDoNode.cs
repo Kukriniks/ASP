@@ -1,4 +1,4 @@
-﻿namespace ToDo.ToDo.Models
+﻿namespace ToDo.Models
 {
 	public class ToDoNode : IToDoNode
 	{

@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 
 using System.ComponentModel;
-using ToDo.ToDo.Models;
-using ToDo.ToDo.Services;
+using ToDo.BL;
+using ToDo.Models;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 namespace ToDo.ToDo.Controllers
 {

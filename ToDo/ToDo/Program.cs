@@ -1,7 +1,9 @@
 
+using ToDo.BL;
+using ToDo.Repositories;
 using ToDo.ToDo.Repositories;
-using ToDo.ToDo.Services;
-using Common.Domain;
+using ToDo.Models;
+
 
 
 var builder = WebApplication.CreateBuilder(args);

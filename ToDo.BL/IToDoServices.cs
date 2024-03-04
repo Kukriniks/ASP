@@ -1,6 +1,7 @@
-﻿using ToDo.ToDo.Models;
+﻿
+using ToDo.Models;
 
-namespace ToDo.ToDo.Services
+namespace ToDo.BL
 { 
     public interface IToDoServices
     {      

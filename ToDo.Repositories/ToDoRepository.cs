@@ -1,7 +1,7 @@
-﻿using ToDo.ToDo.Domain;
-using ToDo.ToDo.Models;
+﻿using ToDo.Models;
 
-namespace ToDo.ToDo.Repositories
+
+namespace ToDo.Repositories
 {
 	public class ToDoRepository : IToDoRepository
     {

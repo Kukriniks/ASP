@@ -1,5 +1,5 @@
-﻿using ToDo.ToDo.Models;
-namespace ToDo.ToDo.Domain
+﻿
+namespace ToDo.Models
 {
     public class ToDoList
     {  
