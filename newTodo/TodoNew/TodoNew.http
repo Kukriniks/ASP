@@ -1,6 +1,0 @@
-@TodoNew_HostAddress = http://localhost:5200
-
-GET {{TodoNew_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
