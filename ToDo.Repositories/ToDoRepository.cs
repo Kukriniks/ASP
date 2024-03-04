@@ -1,9 +1,8 @@
-﻿namespace ToDo.ToDo.Repositories{
+﻿using ToDo.ToDo.Domain;
+using ToDo.ToDo.Models;
 
-    using ToDo.Models;
-	using ToDo.Domain;
-
-	
+namespace ToDo.ToDo.Repositories
+{
 	public class ToDoRepository : IToDoRepository
     {
 		public static ToDoList toDoList = new();
@@ -51,12 +50,17 @@
 
 		public IToDoNode? UpdateToDo(IToDoNode node)
 		{
-			var toDoEntity = toDoList.ToDoNodeList.Single(t => t.Id == node.Id);
-			toDoEntity.UpdatedDate = DateTime.Now;
-			toDoEntity.OwnerId = node.OwnerId;
-			toDoEntity.Label = node.Label;
-			toDoEntity.IsDone = node.IsDone;
-			return toDoEntity;
+			var toDoEntity = toDoList.ToDoNodeList.SingleOrDefault(t => t.Id == node.Id);
+
+			if (toDoEntity != null)
+			{
+				toDoEntity.UpdatedDate = DateTime.Now;
+				toDoEntity.OwnerId = node.OwnerId;
+				toDoEntity.Label = node.Label;
+				toDoEntity.IsDone = node.IsDone;
+				return toDoEntity; 
+			}
+			return null;
 		}
 
 		public bool DeleteToDo(int id)

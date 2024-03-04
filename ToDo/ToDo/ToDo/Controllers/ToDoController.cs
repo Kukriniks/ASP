@@ -1,8 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
-using ToDo.ToDo.Domain;
+
+using System.ComponentModel;
 using ToDo.ToDo.Models;
 using ToDo.ToDo.Services;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,6 +9,7 @@ namespace ToDo.ToDo.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[DisplayName("ToDoAPI")]
 	public class ToDoController : ControllerBase
 	{
 		private readonly IToDoServices _toDoService;
@@ -18,8 +18,8 @@ namespace ToDo.ToDo.Controllers
 		{
 			_toDoService = toDoService;
 		}
-	
-		[HttpGet]
+
+		[HttpGet()]
 		public IActionResult GetList(string? textPattern, int? offset, int? limit)
 		{
 			var toDo = _toDoService.GetList(textPattern, offset, limit);
@@ -27,6 +27,7 @@ namespace ToDo.ToDo.Controllers
 		}
 
 		[HttpGet("{id}")]
+		//[ApiExplorerSettings(GroupName = "GET")]
 		public IActionResult GetByID(int id)
 		{
 			var todo = _toDoService.GetByID(id);
@@ -53,14 +54,22 @@ namespace ToDo.ToDo.Controllers
 
 		//POST создать новую запись, вернуть созданную запись с кодом ответа 201 и ссылкой на созданный ресурс.Сохранить время создание записи в UTC формате(DateTime.UtcNow)
 		[HttpPost]
-		public IActionResult Post([FromBody] ToDoNode value)
+		public IActionResult AddToDo([FromBody] ToDoNode value)
 		{
-			var node = _toDoService.AddToDo(value);
-			return Created($"/api/ToDo/{node.Id}", node); //Спросить !
+			try
+			{
+				var node = _toDoService.AddToDo(value);
+				return Created($"/api/ToDo/{node.Id}", node);
+			}
+			catch (Exception ex)
+			{
+
+				return NotFound(ex.Message);
+			}
 		}
 
 		[HttpPut("{id}, {label}")]
-		public IActionResult Put(int id, string label)
+		public IActionResult UpdateLabel(int id, string label)
 		{
 			var node = _toDoService.UpdateLabel(label, id);
 			if (node != null)
@@ -68,6 +77,34 @@ namespace ToDo.ToDo.Controllers
 				return Ok(node);
 			}
 			return NotFound();
+		}
+
+		[HttpPut("/Update")]
+		public IActionResult UpdateToDO([FromBody] ToDoNode value)
+		{	
+			try
+			{
+				var node = _toDoService.UpdateToDo(value);
+
+				if (node != null)
+				{
+					return Ok(node);
+				}
+			}
+			catch (Exception ex)
+			{
+
+				return NotFound(ex.Message);
+			}
+			return NotFound();
+
+		}
+
+		[HttpDelete()]
+		public IActionResult Delete([FromBody] int id) 
+		{
+			var result = _toDoService.DeleteToDo(id);
+			return result ? Ok() : NotFound();
 		}
 
 	}

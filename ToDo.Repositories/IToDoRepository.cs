@@ -1,8 +1,7 @@
 ﻿
-namespace ToDo.ToDo.Repositories
-{
-	using Microsoft.AspNetCore.Mvc;
-	using ToDo.Models;
+using ToDo.ToDo.Models;
+namespace ToDo.ToDo.Repositories;
+
 	public interface IToDoRepository
     {
 		IEnumerable<IToDoNode> GetList(string? TextPattern, int? offset, int? limit);
@@ -13,4 +12,3 @@ namespace ToDo.ToDo.Repositories
 		IToDoNode? SetAsDone(int id);
 		IToDoNode? UpdateLabel(string label, int id);
 	}
-}

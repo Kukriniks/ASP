@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\" />
+    <ProjectReference Include="..\..\ToDo.BL\ToDo.BL.csproj" />
+    <ProjectReference Include="..\..\ToDo.Domain\ToDo.Domain.csproj" />
+    <ProjectReference Include="..\..\ToDo.Repositories\ToDo.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

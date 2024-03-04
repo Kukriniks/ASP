@@ -1,7 +1,8 @@
 
-using ToDo;
 using ToDo.ToDo.Repositories;
 using ToDo.ToDo.Services;
+using Common.Domain;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddTransient<IToDoServices,ToDoServices>();
 builder.Services.AddTransient<IToDoRepository,ToDoRepository>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

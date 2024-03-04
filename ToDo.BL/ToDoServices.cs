@@ -1,24 +1,30 @@
 ﻿namespace ToDo.ToDo.Services
 {
-    using ToDo.Repositories;
-    using Microsoft.AspNetCore.Mvc;
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
+	using global::ToDo.ToDo.Repositories;
+	using System.Collections.Generic;
     using ToDo.Models;
 
     public class ToDoServices : IToDoServices
     {
         private readonly IToDoRepository _todorepository;
-        public ToDoServices(IToDoRepository toDoRepository)
+		private readonly IUserRepository _userRepository;
+
+		public ToDoServices(IToDoRepository toDoRepository, IUserRepository userRepository)
         {
             _todorepository = toDoRepository;
-        }
+			_userRepository = userRepository;
+
+		}
 
 		public IToDoNode AddToDo(IToDoNode node)
 		{
-			_todorepository.AddToDo(node);
-            return node;
+			var isUser = _userRepository.GetUserByID(node.OwnerId);
+			if (isUser!=null)
+			{
+				_todorepository.AddToDo(node);
+				return node; 
+			}
+			throw new Exception($"No such user where ID = {node.OwnerId}");
 		}
 
 		public bool DeleteToDo(int id)
@@ -41,14 +47,24 @@
 			return null; 
 		}
 
-		public IToDoNode? UpdateLabel(string label, int id)
+		public IToDoNode? UpdateLabel(string label, int id) 
 		{
 			return _todorepository.UpdateLabel(label, id);
 		}
 
 		public IToDoNode UpdateToDo(IToDoNode node)
 		{
-			return _todorepository.UpdateToDo(node);
+			var isUser = _userRepository.GetUserByID(node.OwnerId);
+			if (isUser != null)
+			{
+				var toDoEntity = _todorepository.UpdateToDo(node);
+				if (toDoEntity != null)
+				{
+					return toDoEntity;
+				}
+				throw new Exception($"No such ToDo where ID =  {node.Id}");
+			}
+			throw new Exception($"No such user  where ID = {node.OwnerId}");				
 		}
 
 		IEnumerable<IToDoNode> IToDoServices.GetList(string? TextPattern, int? offset, int? limit)

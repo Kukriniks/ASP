@@ -1,7 +1,7 @@
-﻿namespace ToDo.ToDo.Services
-{
-	using Microsoft.AspNetCore.Mvc;
-	using ToDo.Models;
+﻿using ToDo.ToDo.Models;
+
+namespace ToDo.ToDo.Services
+{ 
     public interface IToDoServices
     {      
        IEnumerable<IToDoNode> GetList(string? TextPattern, int? offset, int? limit);
