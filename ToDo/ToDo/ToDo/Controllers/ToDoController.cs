@@ -54,7 +54,7 @@ namespace ToDo.ToDo.Controllers
 
 		//POST создать новую запись, вернуть созданную запись с кодом ответа 201 и ссылкой на созданный ресурс.Сохранить время создание записи в UTC формате(DateTime.UtcNow)
 		[HttpPost]
-		public IActionResult AddToDo([FromBody] ToDoNode value)
+		public IActionResult AddToDo([FromBody] CreateToDoDTO value)
 		{
 			try
 			{
@@ -79,12 +79,12 @@ namespace ToDo.ToDo.Controllers
 			return NotFound();
 		}
 
-		[HttpPut("/Update")]
-		public IActionResult UpdateToDO([FromBody] ToDoNode value)
-		{	
+		[HttpPut("/Update/{id}")]
+		public IActionResult UpdateToDO(int id, [FromBody] CreateToDoDTO value)
+		{
 			try
 			{
-				var node = _toDoService.UpdateToDo(value);
+				var node = _toDoService.UpdateToDo(id, value);
 
 				if (node != null)
 				{
@@ -93,15 +93,13 @@ namespace ToDo.ToDo.Controllers
 			}
 			catch (Exception ex)
 			{
-
 				return NotFound(ex.Message);
 			}
 			return NotFound();
-
 		}
 
 		[HttpDelete()]
-		public IActionResult Delete([FromBody] int id) 
+		public IActionResult Delete([FromBody] int id)
 		{
 			var result = _toDoService.DeleteToDo(id);
 			return result ? Ok() : NotFound();

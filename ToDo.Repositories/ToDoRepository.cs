@@ -4,27 +4,27 @@
 namespace ToDo.Repositories
 {
 	public class ToDoRepository : IToDoRepository
-    {
+	{
 		public static ToDoList toDoList = new();
 
 		public IEnumerable<IToDoNode> GetList(string? TextPattern, int? offset, int? limit)
-        {
+		{
 			IEnumerable<IToDoNode> todo = toDoList.ToDoNodeList;
 
 			if (!string.IsNullOrWhiteSpace(TextPattern))
-            {
-                todo = todo.Where(n => n.Label.Contains(TextPattern, StringComparison.InvariantCultureIgnoreCase));
-            }
-            limit ??= 10;
+			{
+				todo = todo.Where(n => n.Label.Contains(TextPattern, StringComparison.InvariantCultureIgnoreCase));
+			}
+			limit ??= 10;
 
-            if (offset.HasValue)
-            {
-                todo = todo.Skip(offset.Value);
-            }
+			if (offset.HasValue)
+			{
+				todo = todo.Skip(offset.Value);
+			}
 
-            todo = todo.Take(limit.Value).ToList();
-            return  todo;
-        }
+			todo = todo.Take(limit.Value).ToList();
+			return todo;
+		}
 
 
 		public IToDoNode? GetByID(int id)
@@ -32,7 +32,7 @@ namespace ToDo.Repositories
 			return toDoList.ToDoNodeList.SingleOrDefault(n => n.Id == id);
 		}
 
-		public IToDoNode AddToDo(IToDoNode node)
+		public ToDoNode AddToDo(ToDoNode node)
 		{
 			var time = DateTime.Now;
 			int id = 1;
@@ -41,14 +41,14 @@ namespace ToDo.Repositories
 				id = toDoList.ToDoNodeList.Select(l => l.Id).Max() + 1;
 			}
 
+			node.CreatedDate = time;
 			node.UpdatedDate = time;
-            node.UpdatedDate = time;
-			node.Id = id;
+			node.Id = id;			
 			toDoList.ToDoNodeList.Add(node);
 			return node;
 		}
 
-		public IToDoNode? UpdateToDo(IToDoNode node)
+		public ToDoNode? UpdateToDo(ToDoNode node)
 		{
 			var toDoEntity = toDoList.ToDoNodeList.SingleOrDefault(t => t.Id == node.Id);
 
@@ -58,7 +58,7 @@ namespace ToDo.Repositories
 				toDoEntity.OwnerId = node.OwnerId;
 				toDoEntity.Label = node.Label;
 				toDoEntity.IsDone = node.IsDone;
-				return toDoEntity; 
+				return (ToDoNode)toDoEntity;
 			}
 			return null;
 		}
@@ -66,7 +66,7 @@ namespace ToDo.Repositories
 		public bool DeleteToDo(int id)
 		{
 			var todo = toDoList.ToDoNodeList.SingleOrDefault(t => t.Id == id);
-			if (todo != null) 
+			if (todo != null)
 			{
 				toDoList.ToDoNodeList.Remove(todo);
 				return true;
@@ -77,7 +77,7 @@ namespace ToDo.Repositories
 		public IToDoNode? SetAsDone(int id)
 		{
 			var node = toDoList.ToDoNodeList.FirstOrDefault(n => n.Id == id);
-		
+
 			if (node != null)
 			{
 				node.IsDone = true;
@@ -89,8 +89,8 @@ namespace ToDo.Repositories
 		public IToDoNode? UpdateLabel(string label, int id)
 		{
 			var node = GetByID(id);
-			if (node != null) 
-			{ 
+			if (node != null)
+			{
 				node.Label = label;
 				node.UpdatedDate = DateTime.UtcNow;
 			}

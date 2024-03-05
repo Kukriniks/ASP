@@ -1,7 +1,6 @@
 ﻿using Common.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
-using System.Xml.Linq;
 using User.Services;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -46,9 +45,9 @@ namespace User.API.Controllers
 
 		// DELETE api/<UserController>/5
 		[HttpDelete()]
-		public IActionResult Delete([FromBody]int id)
+		public IActionResult Delete([FromBody] int id)
 		{
-			var result  = _userService.DeleteUser(id);
+			var result = _userService.DeleteUser(id);
 			return Ok(result);
 		}
 	}

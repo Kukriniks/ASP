@@ -1,13 +1,13 @@
 ﻿
 namespace ToDo.Models
 {
-    public class ToDoList
-    {  
-        public List<IToDoNode>? ToDoNodeList { get; set; }
+	public class ToDoList
+	{
+		public List<IToDoNode>? ToDoNodeList { get; set; }
 
-        public ToDoList()
-        {
-            ToDoNodeList =
+		public ToDoList()
+		{
+			ToDoNodeList =
 			[
 				new ToDoNode(id: 1, label: "someTest", _IsDone: false, createdDate: DateTime.UtcNow, updatedDate: DateTime.UtcNow, ownerId:1),
 				new ToDoNode(id: 2, label: "someTest", _IsDone: false, createdDate: DateTime.UtcNow, updatedDate: DateTime.UtcNow, ownerId:2),
@@ -30,6 +30,6 @@ namespace ToDo.Models
 				new ToDoNode(id: 19, label: "someTest", _IsDone: false, createdDate: DateTime.UtcNow, updatedDate: DateTime.UtcNow, ownerId:4),
 				new ToDoNode(id: 20, label: "someTest", _IsDone: false, createdDate: DateTime.UtcNow, updatedDate: DateTime.UtcNow, ownerId:4),
 			];
-        }
-    }
+		}
+	}
 }

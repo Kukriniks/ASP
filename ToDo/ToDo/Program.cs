@@ -2,9 +2,6 @@
 using ToDo.BL;
 using ToDo.Repositories;
 using ToDo.ToDo.Repositories;
-using ToDo.Models;
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddTransient<IToDoServices,ToDoServices>();
-builder.Services.AddTransient<IToDoRepository,ToDoRepository>();
+builder.Services.AddTransient<IToDoServices, ToDoServices>();
+builder.Services.AddTransient<IToDoRepository, ToDoRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+builder.Services.AddAutoMapperToDoBL();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -24,9 +24,9 @@ namespace ToDo.ToDo.Repositories
 
 		public IUserNode UpdateUser(IUserNode user)
 		{
-			var userEntity = userList.UserNodeList.FirstOrDefault(t=>t.Id == user.Id);
+			var userEntity = userList.UserNodeList.FirstOrDefault(t => t.Id == user.Id);
 			if (userEntity != null)
-			{ 
+			{
 				user.Name = userEntity.Name;
 				return userEntity;
 			}
@@ -36,7 +36,7 @@ namespace ToDo.ToDo.Repositories
 		public bool DeleteUser(int id)
 		{
 			var userEntity = userList.UserNodeList.FirstOrDefault(t => t.Id == id);
-			if (userEntity != null) 
+			if (userEntity != null)
 			{
 				userList.UserNodeList.Remove(userEntity);
 				return true;

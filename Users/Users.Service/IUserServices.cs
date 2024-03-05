@@ -2,9 +2,9 @@
 using Common.Domain;
 
 namespace User.Services
-{ 
-    public interface IUserServices
-    {
+{
+	public interface IUserServices
+	{
 		IEnumerable<IUserNode> GetList();
 		IUserNode? GetUserByID(int id);
 		IUserNode AddUser(IUserNode node);

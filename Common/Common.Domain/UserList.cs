@@ -1,13 +1,13 @@
 ﻿
 namespace Common.Domain
 {
-    public class UserList
-    {  
-        public List<IUserNode>? UserNodeList { get; set; }
+	public class UserList
+	{
+		public List<IUserNode>? UserNodeList { get; set; }
 
-        public UserList()
-        {
-            UserNodeList =
+		public UserList()
+		{
+			UserNodeList =
 			[
 				new UserNode(id: 1, name: "Name 1"),
 				new UserNode(id: 2, name: "Name 2"),
@@ -15,6 +15,6 @@ namespace Common.Domain
 				new UserNode(id: 4, name: "Name 4"),
 				new UserNode(id: 5, name: "Name 5")
 			];
-        }
-    }
+		}
+	}
 }
