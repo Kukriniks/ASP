@@ -13,8 +13,8 @@ namespace Common.Repositories
 				bool? descending = null);
 		TEntity? SingleOrDefault(Expression<Func<TEntity, bool>>? predicate = null);
 		int Count(Expression<Func<TEntity, bool>>? predicate = null);
-		TEntity Add(TEntity book);
-		TEntity Update(TEntity book);
-		bool Delete(TEntity book);
+		TEntity Add(TEntity node);
+		TEntity Update(TEntity node);
+		bool Delete(TEntity node);
 	}
 }

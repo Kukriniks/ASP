@@ -3,7 +3,7 @@
 
 namespace ToDo.Repositories
 {
-	public class ToDoRepository : IToDoRepository
+	public class ToDoRepository //:IToDoRepository
 	{
 		public static ToDoList toDoList = new();
 

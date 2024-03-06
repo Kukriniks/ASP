@@ -5,23 +5,21 @@ namespace User.Services
 {
 	public class UserServices : IUserServices
 	{
-		private readonly IRepository<UserNode> _userRepository;
-		public UserServices(IRepository<UserNode> userRepository)
-		{
-			_userRepository = userRepository;
-			_userRepository.Add(new UserNode { Id = 1,Name = "one" });
+		public readonly IRepository<UserNode> _userRepository = new BaseRepository<UserNode>();
+
+        public UserServices()
+        {			
+			_userRepository.Add(new UserNode { Id = 1, Name = "one" });
 			_userRepository.Add(new UserNode { Id = 2, Name = "two" });
 			_userRepository.Add(new UserNode { Id = 3, Name = "three" });
 			_userRepository.Add(new UserNode { Id = 4, Name = "four" });
 			_userRepository.Add(new UserNode { Id = 5, Name = "one" });
-
 		}
-		
 
-		public UserNode AddUser(UserNode user)
+
+        public UserNode AddUser(UserNode user)
 		{
-			return _userRepository.Add(user);
-			
+			return _userRepository.Add(user);			
 		}
 
 		public bool DeleteUser(int id)
@@ -32,7 +30,11 @@ namespace User.Services
 
 		public IReadOnlyCollection<UserNode> GetList(int? offset, string? nameFreeText = null, int? limit = 10)
 		{
-			return _userRepository.GetList(offset, limit, u =>u.Name.Contains(nameFreeText), u => u.Id);
+			return _userRepository.GetList(
+				offset,
+				limit,
+				nameFreeText == null ? null : n => n.Name.Contains(nameFreeText),
+				n => n.Id);
 		}
 
 		public UserNode? GetUserByID(int id)
@@ -45,9 +47,7 @@ namespace User.Services
 			return _userRepository.Update(user);
 		}
 
-
-
-	}
+    }
 }
 
 

@@ -9,7 +9,5 @@ namespace ToDo.Models
 		int OwnerId { get; set; }
 		DateTime CreatedDate { get; set; }
 		DateTime UpdatedDate { get; set; }
-		
-
 	}
 }

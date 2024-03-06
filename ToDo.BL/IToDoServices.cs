@@ -1,15 +1,19 @@
-﻿using ToDo.Models;
+﻿using Common.Domain;
+using Common.Repositories;
+using System.Linq.Expressions;
+using ToDo.Models;
 
 namespace ToDo.BL
 {
-	public interface IToDoServices
+	public interface IToDoServices 
 	{
-		IEnumerable<IToDoNode> GetList(string? TextPattern, int? offset, int? limit);
-		IToDoNode GetByID(int id);
+		IReadOnlyCollection<ToDoNode> GetList(int? offset, string? nameFreeText, int? limit = 10);
+		ToDoNode GetByID(int id);
 		ToDoNode AddToDo(CreateToDoDTO node);
 		ToDoNode UpdateToDo(int id, CreateToDoDTO node);
-		IToDoNode? UpdateLabel(string label, int id);
+		ToDoNode? UpdateLabel(string label, int id);
 		bool DeleteToDo(int id);
 		object? IsDone(int id);
+		int Count(string? nameFreeText);
 	}
 }

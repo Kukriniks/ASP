@@ -1,7 +1,7 @@
 ﻿
 namespace Common.Domain
 {
-	public class UserList
+	public class UserList 
 	{
 		public List<UserNode> UserNodeList { get; set; }
 

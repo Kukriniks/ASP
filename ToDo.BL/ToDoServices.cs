@@ -4,19 +4,37 @@ using ToDo.Repositories;
 namespace ToDo.BL
 {
 	using AutoMapper;
+	using Common.Repositories;
 	using System.Collections.Generic;
-	using System.Runtime.CompilerServices;
+	using User.Services;
 
 	public class ToDoServices : IToDoServices
 	{
-		private readonly IToDoRepository _todorepository;
-		private readonly I_OldUserRepository _userRepository;
+		private static  IRepository<ToDoNode> _todorepository = new BaseRepository<ToDoNode>();
+		//private static IRepository<ToDoNode> toDoRepository;
+		private readonly IUserServices _userRepository = new UserServices(); //только так получилось внедрить репозиторий пользователей обьявленный в сервисе 
+		
 		private readonly IMapper _mapper;
-		public ToDoServices(IToDoRepository toDoRepository, I_OldUserRepository userRepository, IMapper mapper)
+		public ToDoServices( IMapper mapper, IUserServices userRepository)
 		{
-			_todorepository = toDoRepository;
+			//_todorepository = toDoRepository;
 			_userRepository = userRepository;
-			_mapper			= mapper;
+			_mapper			= mapper;			
+		}
+         static ToDoServices()
+        {
+			//_todorepository = toDoRepository;
+			_todorepository.Add(new ToDoNode(1,"first",false,DateTime.UtcNow,DateTime.UtcNow,1));
+			_todorepository.Add(new ToDoNode(2, "second", false, DateTime.UtcNow, DateTime.UtcNow, 1));
+		}
+        public IReadOnlyCollection<ToDoNode> GetList(int? offset, string? nameFreeText, int? limit = 10)
+		{
+			
+			return _todorepository.GetList(
+				offset,
+				limit,
+				nameFreeText == null ? null : n => n.Label.Contains(nameFreeText),
+				n => n.Id);
 		}
 
 		public ToDoNode AddToDo(CreateToDoDTO node)
@@ -25,7 +43,10 @@ namespace ToDo.BL
 			if (isUserExist != null)
 			{
 				var toDo = _mapper.Map<CreateToDoDTO, ToDoNode>(node);
-				return _todorepository.AddToDo(toDo);
+				toDo.UpdatedDate = DateTime.UtcNow;
+				toDo.CreatedDate = DateTime.UtcNow;					
+
+				return _todorepository.Add(toDo);
 			}
 			throw new Exception($"No such user where ID = {node.OwnerId}");
 		}
@@ -33,13 +54,14 @@ namespace ToDo.BL
 		public ToDoNode UpdateToDo(int id, CreateToDoDTO node)
 		{
 			var isUserExist = _userRepository.GetUserByID(node.OwnerId);
-			var isToDoIDExist = _todorepository.GetByID(id);
+			var isToDoIDExist = _todorepository.SingleOrDefault(n=>n.Id == id);
 
 			if (isUserExist != null && isToDoIDExist != null)
 			{
 				var toDo = _mapper.Map<CreateToDoDTO, ToDoNode>(node);
 				toDo.Id = id;
-				var toDoEntity = _todorepository.UpdateToDo(toDo);
+				toDo.UpdatedDate = DateTime.UtcNow;
+				var toDoEntity = _todorepository.Update(toDo);
 				return toDoEntity;
 			}
 			throw new Exception($"No such ToDo id or User id \n ToDo ID = {id} \n user ID = {node.OwnerId} ");
@@ -47,35 +69,38 @@ namespace ToDo.BL
 
 		public bool DeleteToDo(int id)
 		{
-			return _todorepository.DeleteToDo(id);
+			var nodeForDelete = GetByID(id);
+			return _todorepository.Delete(nodeForDelete);
 		}
 
-		public IToDoNode? GetByID(int id)
-		{
-			return _todorepository.GetByID(id);
+		public ToDoNode? GetByID(int id)
+		{			
+			return _todorepository.SingleOrDefault(n => n.Id == id);
 		}
 
 		public object? IsDone(int id)
 		{
-			var node = _todorepository.SetAsDone(id);
+			var node = GetByID(id);			
 			if (node != null)
 			{
+				node.IsDone = true;
 				return new { id = node.Id, isDone = true };
 			}
 			return null;
 		}
 
-		public IToDoNode? UpdateLabel(string label, int id)
+		public ToDoNode? UpdateLabel(string label, int id)
 		{
-			return _todorepository.UpdateLabel(label, id);
+			var node = GetByID(id);
+			node.Label = label;
+			return _todorepository.Update(node);
 		}
 
-	
-
-		IEnumerable<IToDoNode> IToDoServices.GetList(string? TextPattern, int? offset, int? limit)
-		{
-			return _todorepository.GetList(TextPattern, offset, limit);
+		public int Count (string? nameFreeText) 
+		{ 
+			return _todorepository.Count(nameFreeText == null ? null:n=>n.Label.Contains(nameFreeText));
 		}
+
 	}
 }
 

@@ -20,11 +20,14 @@ namespace ToDo.ToDo.Controllers
 		}
 
 		[HttpGet()]
-		public IActionResult GetList(string? textPattern, int? offset, int? limit)
+		public IActionResult GetList(string? nameFreeText, int? offset, int? limit)
 		{
-			var toDo = _toDoService.GetList(textPattern, offset, limit);
+			var toDo = _toDoService.GetList(offset, nameFreeText, limit);
+			var count = _toDoService.Count(nameFreeText);
+			HttpContext.Response.Headers.Append("X-Total-Count", count.ToString());	
 			return Ok(toDo);
 		}
+
 
 		[HttpGet("{id}")]
 		//[ApiExplorerSettings(GroupName = "GET")]

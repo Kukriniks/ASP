@@ -74,5 +74,5 @@ namespace Common.Repositories
 			return _data.Remove(node);
 		}
 
-	}
+    }
 }

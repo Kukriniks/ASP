@@ -1,11 +1,12 @@
 ﻿
+using Common.Domain;
 using ToDo.Models;
 
 namespace ToDo.Repositories
 {
 	public interface IToDoRepository
 	{
-		IEnumerable<IToDoNode> GetList(string? TextPattern, int? offset, int? limit);
+		IReadOnlyCollection<ToDoNode> GetList(int? offset, string? nameFreeText, int? limit = 10);
 		IToDoNode? GetByID(int id);
 		ToDoNode AddToDo(ToDoNode node);
 		ToDoNode UpdateToDo(ToDoNode node);

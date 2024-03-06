@@ -2,7 +2,6 @@
 
 using Common.Domain;
 using Common.Repositories;
-using ToDo.Repositories;
 using User.Services;
 
 namespace User.API
