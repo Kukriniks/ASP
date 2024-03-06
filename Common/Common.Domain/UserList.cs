@@ -3,7 +3,7 @@ namespace Common.Domain
 {
 	public class UserList
 	{
-		public List<IUserNode>? UserNodeList { get; set; }
+		public List<UserNode> UserNodeList { get; set; }
 
 		public UserList()
 		{

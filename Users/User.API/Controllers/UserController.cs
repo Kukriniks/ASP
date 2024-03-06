@@ -21,9 +21,9 @@ namespace User.API.Controllers
 
 		// GET: api/<UserController>
 		[HttpGet]
-		public IActionResult GetUsers()
+		public IActionResult GetList(int? offset, string? nameFreeText, int? limit)
 		{
-			var users = _userService.GetList();
+			var users = _userService.GetList(offset, nameFreeText, limit);
 			return Ok(users);
 		}
 

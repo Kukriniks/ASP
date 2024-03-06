@@ -10,9 +10,9 @@ namespace ToDo.BL
 	public class ToDoServices : IToDoServices
 	{
 		private readonly IToDoRepository _todorepository;
-		private readonly IUserRepository _userRepository;
+		private readonly I_OldUserRepository _userRepository;
 		private readonly IMapper _mapper;
-		public ToDoServices(IToDoRepository toDoRepository, IUserRepository userRepository, IMapper mapper)
+		public ToDoServices(IToDoRepository toDoRepository, I_OldUserRepository userRepository, IMapper mapper)
 		{
 			_todorepository = toDoRepository;
 			_userRepository = userRepository;
@@ -24,9 +24,6 @@ namespace ToDo.BL
 			var isUserExist = _userRepository.GetUserByID(node.OwnerId);
 			if (isUserExist != null)
 			{
-				//var config = new MapperConfiguration(cfg => cfg.CreateMap<CreateToDoDTO, ToDoNode>());
-				//var mapper = new Mapper(config);
-				//var toDo = mapper.Map<CreateToDoDTO, ToDoNode>(node);
 				var toDo = _mapper.Map<CreateToDoDTO, ToDoNode>(node);
 				return _todorepository.AddToDo(toDo);
 			}
@@ -40,8 +37,6 @@ namespace ToDo.BL
 
 			if (isUserExist != null && isToDoIDExist != null)
 			{
-				//var config = new MapperConfiguration(cfg => cfg.CreateMap<CreateToDoDTO, ToDoNode>());
-				//var mapper = new Mapper(config);
 				var toDo = _mapper.Map<CreateToDoDTO, ToDoNode>(node);
 				toDo.Id = id;
 				var toDoEntity = _todorepository.UpdateToDo(toDo);

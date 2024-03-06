@@ -1,6 +1,6 @@
 ﻿using Common.Domain;
 
-public interface IUserRepository
+public interface I_OldUserRepository
 {
 	IEnumerable<IUserNode> GetList();
 	IUserNode? GetUserByID(int id);

@@ -1,7 +1,7 @@
 ﻿using Common.Domain;
-namespace ToDo.ToDo.Repositories
+namespace ToDo.Repositories
 {
-	public class UserRepository : IUserRepository
+	public class Old_UserRepository : I_OldUserRepository
 	{
 		public static UserList userList = new();
 
@@ -18,7 +18,8 @@ namespace ToDo.ToDo.Repositories
 				id = userList.UserNodeList.Select(l => l.Id).Max() + 1;
 			}
 			user.Id = id;
-			userList.UserNodeList.Add(user);
+
+			userList.UserNodeList.Add((UserNode)user);
 			return user;
 		}
 
