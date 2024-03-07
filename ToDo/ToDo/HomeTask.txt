@@ -62,7 +62,9 @@ Common.Domain -  библиотека, содержит сущность User
 1. Установить Fluent в проекты бизнес логики. Необходимые библиотеки: FluentValidation и FluentValidation.DependencyInjectionExtensions
 2. Добавить валидаторы для моделей Create и Update
 3. Добавить автоматическое инжектирование в bl проекте: services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() }, includeInternalTypes: true);
-4. Добавить фильтр для валидации запросов к контроллеру. Можно использовать библиотеку SharpGrip.FluentValidation.AutoValidation.Mvc (код для добавления сервиса    builder.Services.AddFluentValidationAutoValidation();)
+4. Добавить фильтр для валидации запросов к контроллеру. Можно использовать библиотеку SharpGrip.FluentValidation.AutoValidation.Mvc 
+(код для добавления сервиса    builder.Services.AddFluentValidationAutoValidation();)
+
 5. Добавить легирование в api проект. Библиотека Serilog.AspNetCore
 6. Обернуть код в program.cs в блок try, catch, finally. Залогировать исключения. Написать в лог сообщение о запуске приложения
 7. Залагировать операции POST, PUT, PUTCH, DELET на уровне BL в коде сервисов. Сохранить в лог dto в json формате

@@ -43,9 +43,12 @@ namespace ToDo.BL
 			if (isUserExist != null)
 			{
 				var toDo = _mapper.Map<CreateToDoDTO, ToDoNode>(node);
-				toDo.UpdatedDate = DateTime.UtcNow;
-				toDo.CreatedDate = DateTime.UtcNow;					
+				var allList = _todorepository.GetList();
+				var maxID = allList.Max(x => x.Id);
 
+				toDo.UpdatedDate = DateTime.UtcNow;
+				toDo.CreatedDate = DateTime.UtcNow;
+				toDo.Id = maxID + 1;
 				return _todorepository.Add(toDo);
 			}
 			throw new Exception($"No such user where ID = {node.OwnerId}");
