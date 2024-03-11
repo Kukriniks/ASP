@@ -5,7 +5,7 @@ namespace User.Services
 {
 	public class UserServices : IUserServices
 	{
-		public readonly IRepository<UserNode> _userRepository = new BaseRepository<UserNode>();
+		public readonly IBaseRepository<UserNode> _userRepository = new BaseRepository<UserNode>();
 
         public UserServices()
         {			

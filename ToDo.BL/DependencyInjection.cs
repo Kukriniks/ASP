@@ -1,16 +1,24 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Common.Domain;
+using Common.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using ToDo.BL.Mapping;
+using ToDo.Models;
+using FluentValidation;
+using System.Reflection;
 
 namespace ToDo.BL
 {
 	public static class ToDoDependencyInjection
 	{
-		//public static void AddServices(IServiceCollection collection)
-		//{
-		//	collection.AddAutoMapper(typeof(AutoMapperProfile));
-		//}
 
-		public static IServiceCollection AddAutoMapperToDoBL(this IServiceCollection services)
-				=> services.AddAutoMapper(typeof(AutoMapperProfile));
-	}
+		public static IServiceCollection AddToDoServices(this IServiceCollection services)
+		{
+			services.AddAutoMapper(typeof(AutoMapperProfile));
+			services.AddTransient<IToDoServices, ToDoServices>();
+			services.AddTransient<IBaseRepository<UserNode>, BaseRepository<UserNode>>();
+			services.AddTransient<IBaseRepository<ToDoNode>, BaseRepository<ToDoNode>>();
+			services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() }, includeInternalTypes: true);
+			return services;
+		}
+	}	
 }

@@ -1,6 +1,6 @@
 ﻿namespace ToDo.Models
 {
-	public class ToDoNode : IToDoNode
+	public class ToDoNode 
 	{
 		public int Id { get; set; }
 		public int OwnerId { get; set; }

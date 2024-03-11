@@ -17,7 +17,7 @@ namespace User.API
 			builder.Services.AddControllers();
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddTransient<IUserServices, UserServices>();
-			builder.Services.AddTransient<IRepository<UserNode>, BaseRepository<UserNode>>();
+			builder.Services.AddTransient<IBaseRepository<UserNode>, BaseRepository<UserNode>>();
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
 

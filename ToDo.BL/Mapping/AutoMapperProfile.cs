@@ -8,6 +8,8 @@ namespace ToDo.BL.Mapping
 		public AutoMapperProfile() 
 		{
 			CreateMap<CreateToDoDTO, ToDoNode>();
+			CreateMap<UpdateToDoDTO, ToDoNode>();
+			CreateMap<UpdateToDoLabelDTO, ToDoNode>();
 		}
 	}
 }

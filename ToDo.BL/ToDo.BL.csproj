@@ -9,13 +9,14 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.Domain\Common.Domain.csproj" />
     <ProjectReference Include="..\Common\Common.Repositories\Common.Repositories.csproj" />
     <ProjectReference Include="..\ToDo.Domain\ToDo.Domain.csproj" />
-    <ProjectReference Include="..\ToDo.Repositories\ToDo.Repositories.csproj" />
     <ProjectReference Include="..\Users\Users.Service\Users.Service.csproj" />
   </ItemGroup>
 

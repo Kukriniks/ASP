@@ -1,6 +1,6 @@
 ﻿namespace Common.Domain
 {
-	public class UserNode : IUserNode
+	public class UserNode 
 	{
 		public int Id { get; set; }
 		public string Name { get; set; } = default!;

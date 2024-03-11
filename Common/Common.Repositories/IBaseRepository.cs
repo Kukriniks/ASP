@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Common.Repositories
 {
-	public interface IRepository<TEntity> where TEntity : class, new()
+	public interface IBaseRepository<TEntity> where TEntity : class, new()
 	{
 		TEntity[] GetList(
 				int? offset = null,

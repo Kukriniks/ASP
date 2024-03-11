@@ -1,14 +1,15 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ToDo.BL.Validators 
+
+namespace ToDo.BL.Validators
 {
-	internal class CreateToDoValidator : AbstractValidator<CreateToDoDTO>
+	public  class CreateToDoValidator : AbstractValidator<CreateToDoDTO>
 	{
+        public CreateToDoValidator()
+        {
+            RuleFor(i => i.OwnerId).GreaterThan(0).LessThan(65000).WithMessage("Owner ID Error");
+            RuleFor(l => l.Label).Length(3, 100).WithMessage("Error label Length");
 
-	}
+        }
+    }
 }

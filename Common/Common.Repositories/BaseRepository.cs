@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Common.Repositories
 {
-	public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class, new()
+	public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class, new()
 	{
 		private readonly List<TEntity> _data = [];
 
