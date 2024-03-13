@@ -4,6 +4,7 @@
 	{
 		public int Id { get; set; }
 		public string Name { get; set; } = default!;
+		public ICollection<ToDoNode> Todos { get; set; } = default!;
 
 		public UserNode(int id, string name)
 		{

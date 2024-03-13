@@ -1,5 +1,6 @@
 ﻿
-using ToDo.Models;
+
+using Common.Domain;
 
 namespace ToDo.BL
 {

@@ -1,4 +1,4 @@
-﻿using ToDo.Models;
+﻿
 namespace ToDo.BL
 {
 	using AutoMapper;
@@ -8,11 +8,13 @@ namespace ToDo.BL
 	using ToDo.BL.Validators;
 	using User.Services;
 	using ToDo.BL.Mapping;
+	using Serilog;
+	using Common.Domain;
 
 	public class ToDoServices : IToDoServices
 	{
 		private static  IBaseRepository<ToDoNode> _todorepository = new BaseRepository<ToDoNode>();	
-		private readonly IUserServices _userRepository = new UserServices(); //только так получилось внедрить репозиторий пользователей обьявленный в сервисе 
+		private readonly IUserServices _userRepository; //только так получилось внедрить репозиторий пользователей обьявленный в сервисе 
 		
 		private readonly IValidator<CreateToDoDTO> _validator;
 		private readonly IMapper _mapper;
@@ -41,7 +43,7 @@ namespace ToDo.BL
 
 		public ToDoNode AddToDo(CreateToDoDTO node)
 		{
-			
+			Log.Error("test Log1");
 			var validatorResult = _validator.Validate(node);
 			if (!validatorResult.IsValid) 
 			{
@@ -49,7 +51,7 @@ namespace ToDo.BL
 			}
 			var isUserExist = _userRepository.GetUserByID(node.OwnerId);
 			if (isUserExist != null)
-			{
+			{				
 				var toDo = _mapper.Map<CreateToDoDTO, ToDoNode>(node);
 				var allList = _todorepository.GetList();
 				int maxID = 0;
@@ -67,6 +69,7 @@ namespace ToDo.BL
 				toDo.Id = maxID + 1;
 				return _todorepository.Add(toDo);
 			}
+			Log.Error("test Log2");
 			throw new Exception($"No such user where ID = {node.OwnerId}");
 		}
 

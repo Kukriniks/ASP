@@ -1,6 +1,6 @@
 ﻿
 using FluentValidation;
-using System.Data;
+
 
 namespace ToDo.BL.Validators
 {

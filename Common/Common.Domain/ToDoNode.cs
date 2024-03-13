@@ -1,4 +1,4 @@
-﻿namespace ToDo.Models
+﻿namespace Common.Domain
 {
 	public class ToDoNode 
 	{
@@ -6,6 +6,7 @@
 		public int OwnerId { get; set; }
 		public string Label { get; set; } = default!;
 		public bool IsDone { get; set; }
+		public UserNode Owner { get; set; }
 		public DateTime CreatedDate { get; set; }
 		public DateTime UpdatedDate { get; set; }
 

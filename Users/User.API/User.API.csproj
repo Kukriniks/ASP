@@ -11,8 +11,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Common.API\Common.API.csproj" />
     <ProjectReference Include="..\..\Common\Common.Domain\Common.Domain.csproj" />
     <ProjectReference Include="..\..\Common\Common.Repositories\Common.Repositories.csproj" />
+    <ProjectReference Include="..\..\Users.BL\Users.BL.csproj" />
     <ProjectReference Include="..\Users.Service\Users.Service.csproj" />
   </ItemGroup>
 

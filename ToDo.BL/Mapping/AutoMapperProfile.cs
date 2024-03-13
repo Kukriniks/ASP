@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using ToDo.Models;
+using Common.Domain;
+
 
 namespace ToDo.BL.Mapping
 {
