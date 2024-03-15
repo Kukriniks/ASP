@@ -5,16 +5,18 @@ namespace Common.Repositories
 {
 	public interface IBaseRepository<TEntity> where TEntity : class, new()
 	{
-		TEntity[] GetList(
+		Task<TEntity[]> GetAllAsync(				
 				int? offset = null,
 				int? limit = null,
 				Expression<Func<TEntity, bool>>? predicate = null,
 				Expression<Func<TEntity, object>>? orderBy = null,
-				bool? descending = null);
-		TEntity? SingleOrDefault(Expression<Func<TEntity, bool>>? predicate = null);
-		int Count(Expression<Func<TEntity, bool>>? predicate = null);
-		TEntity Add(TEntity node);
-		TEntity Update(TEntity node);
-		bool Delete(TEntity node);
+				bool? descending = null, 
+				CancellationToken cancellationToken = default);	
+		
+		Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default);
+		Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default);
+		Task<TEntity> AddAsync(TEntity node, CancellationToken cancellationToken = default);
+		Task<TEntity> UpdateAsync(TEntity node, CancellationToken cancellationToken = default);
+		Task<bool> DeleteAsync(TEntity node, CancellationToken cancellationToken = default);
 	}
 }

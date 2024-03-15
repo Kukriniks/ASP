@@ -19,35 +19,31 @@ namespace User.API.Controllers
 			_userService = userService;
 		}
 
-		// GET: api/<UserController>
 		[HttpGet]
-		public IActionResult GetList(int? offset, string? nameFreeText, int? limit)
+		public async Task<IActionResult> GetList(string? nameFreeText, int? offset, int? limit)
 		{
-			var users = _userService.GetList(offset, nameFreeText, limit);
-			return Ok(users);
+			var toDo = await _userService.GetListAsync(offset, nameFreeText, limit);
+			return Ok(toDo);
 		}
-
-		// GET api/<UserController>/5
+	
 		[HttpGet("{id}")]
-		public IActionResult GetUserByID(int id)
+		public async Task<IActionResult> GetByID(int id)
 		{
-			var user = _userService.GetUserByID(id);
+			var todo = await _userService.GetByIDAsync(id);
+			return Ok(todo);
+		}		
+		
+		[HttpPost]
+		public async Task<IActionResult> AddUser([FromBody] Common.Domain.User value)
+		{
+			var user = await _userService.AddUserAsync(value);
 			return Ok(user);
 		}
-
-		// POST api/<UserController>
-		[HttpPost]
-		public IActionResult AddUser([FromBody] UserNode value)
-		{
-			var user = _userService.AddUser(value);
-			return Created($"{user.Id}", user);
-		}
-
-		// DELETE api/<UserController>/5
+		
 		[HttpDelete()]
-		public IActionResult Delete([FromBody] int id)
+		public async Task<IActionResult> Delete([FromBody] int id)
 		{
-			var result = _userService.DeleteUser(id);
+			var result = await _userService.DeleteUserAsync(id);
 			return Ok(result);
 		}
 	}

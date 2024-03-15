@@ -1,4 +1,4 @@
-﻿using Common.API.Exceptions;
+﻿using Common.BL.Exceptions;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 namespace Common.API

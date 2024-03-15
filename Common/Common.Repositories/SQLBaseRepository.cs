@@ -1,6 +1,6 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-
 
 namespace Common.Repositories
 {
@@ -13,30 +13,35 @@ namespace Common.Repositories
 			_applicationDBContext = applicationDBContext;
 		}
 
-		TEntity IBaseRepository<TEntity>.Add(TEntity node)
+		public async Task<TEntity> AddAsync(TEntity node, CancellationToken cancellationToken = default)
 		{
 			var set = _applicationDBContext.Set<TEntity>();
-			set.Add(node);
-			_applicationDBContext.SaveChanges();
-			return node;
-
+			  set.Add(node);
+			await _applicationDBContext.SaveChangesAsync();
+			return  node;
 		}
 
-		int IBaseRepository<TEntity>.Count(Expression<Func<TEntity, bool>>? predicate)
+		public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default)
 		{
 			var set = _applicationDBContext.Set<TEntity>();
-			return predicate == null ? set.Count() : set.Count(predicate);
+			
+			return  predicate == null ? await set.CountAsync(cancellationToken) : await set.CountAsync(predicate, cancellationToken);
 		}
 
-		bool IBaseRepository<TEntity>.Delete(TEntity node)
+		public async Task<bool> DeleteAsync(TEntity node, CancellationToken cancellationToken = default)
 		{
 			var set = _applicationDBContext.Set<TEntity>();
 			set.Remove(node);
-			return _applicationDBContext.SaveChanges() > 0;
-			
+			return await  _applicationDBContext.SaveChangesAsync() > 0;
 		}
 
-		TEntity[] IBaseRepository<TEntity>.GetList(int? offset, int? limit, Expression<Func<TEntity, bool>>? predicate, Expression<Func<TEntity, object>>? orderBy, bool? descending)
+		public async Task<TEntity[]> GetAllAsync(int? offset = null, 
+												int? limit = null,
+												Expression<Func<TEntity,
+												bool>>? predicate = null,
+												Expression<Func<TEntity, object>>? orderBy = null, 
+												bool? descending = null, 
+												CancellationToken cancellationToken = default)
 		{
 			var querible = _applicationDBContext.Set<TEntity>().AsQueryable();
 			if (predicate != null)
@@ -59,21 +64,29 @@ namespace Common.Repositories
 				querible = querible.Take(limit.Value);
 			}
 
-			return querible.ToArray();
+			return await querible.ToArrayAsync();
 		}
 
-		TEntity? IBaseRepository<TEntity>.SingleOrDefault(Expression<Func<TEntity, bool>>? predicate)
+		public TEntity? SingleOrDefault(Expression<Func<TEntity, bool>>? predicate)
 		{
 			var set = _applicationDBContext.Set<TEntity>();
 			return predicate == null ? set.SingleOrDefault() : set.SingleOrDefault(predicate);
 		}
 
-		TEntity IBaseRepository<TEntity>.Update(TEntity node)
+		public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default)
 		{
 			var set = _applicationDBContext.Set<TEntity>();
+			return  predicate == null ? await  set.SingleOrDefaultAsync() : await  set.SingleOrDefaultAsync(predicate);
+		}
+
+		public async Task<TEntity> UpdateAsync(TEntity node, CancellationToken cancellationToken = default)
+		{
+			var set = _applicationDBContext.Set<TEntity>();			
 			set.Update(node);
-			_applicationDBContext.SaveChanges();
+			await _applicationDBContext.SaveChangesAsync(cancellationToken);
 			return node;
 		}
+
+
 	}
 }

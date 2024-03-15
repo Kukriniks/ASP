@@ -2,146 +2,140 @@
 namespace ToDo.BL
 {
 	using AutoMapper;
+	using Common.BL.Exceptions;
+	using Common.Domain;
 	using Common.Repositories;
 	using FluentValidation;
+	using Serilog;
 	using System.Collections.Generic;
+	using System.Threading;
+	using System.Threading.Tasks;
 	using ToDo.BL.Validators;
 	using User.Services;
-	using ToDo.BL.Mapping;
-	using Serilog;
-	using Common.Domain;
 
 	public class ToDoServices : IToDoServices
 	{
-		private static  IBaseRepository<ToDoNode> _todorepository = new BaseRepository<ToDoNode>();	
-		private readonly IUserServices _userRepository; //только так получилось внедрить репозиторий пользователей обьявленный в сервисе 
-		
+		private static IBaseRepository<ToDo>? _todorepository;
+		private readonly IUserServices _userRepository;
+
 		private readonly IValidator<CreateToDoDTO> _validator;
 		private readonly IMapper _mapper;
-		
-		public ToDoServices(IMapper mapper, IUserServices userRepository, IValidator<CreateToDoDTO> validator)
+
+		public ToDoServices(IMapper mapper, IUserServices userRepository, IValidator<CreateToDoDTO> validator, IBaseRepository<ToDo> baseRepository)
 		{
 			_userRepository = userRepository;
 			_mapper = mapper;
 			_validator = validator;
-
-
-			_todorepository.Add(new ToDoNode(1, "first", false, DateTime.UtcNow, DateTime.UtcNow, 1));
-			_todorepository.Add(new ToDoNode(2, "second", false, DateTime.UtcNow, DateTime.UtcNow, 1));
+			_todorepository = baseRepository;
 		}
 
-
-        public IReadOnlyCollection<ToDoNode> GetList(int? offset, string? nameFreeText, int? limit = 10)
+		public async Task<IReadOnlyCollection<ToDo>> GetListAsync(int? offset, string? nameFreeText, int? limit = 10, CancellationToken cancellationToken = default)
 		{
-			
-			return _todorepository.GetList(
-				offset,
-				limit,
-				nameFreeText == null ? null : n => n.Label.Contains(nameFreeText),
-				n => n.Id);
+			return await _todorepository.GetAllAsync(
+			offset,
+			limit,
+			nameFreeText == null ? null : n => n.Label.Contains(nameFreeText),
+					u => u.Id,
+			cancellationToken: cancellationToken);
 		}
 
-		public ToDoNode AddToDo(CreateToDoDTO node)
+		public async Task<ToDo> GetByIDAsync(int id, CancellationToken cancellationToken = default)
 		{
-			Log.Error("test Log1");
+			return await _todorepository.SingleOrDefaultAsync(u => u.Id == id, cancellationToken);
+		}
+
+		public async Task<ToDo> AddToDoAsync(CreateToDoDTO node, CancellationToken cancellationToken = default)
+		{
+			Log.Error("AddToDoAsync Error");
+			Log.Information("enter in AddToDoAsync");
 			var validatorResult = _validator.Validate(node);
-			if (!validatorResult.IsValid) 
+			if (!validatorResult.IsValid)
 			{
-				throw new Exception($"Incorrect Data");
+				throw new BadRequestException("BadRequst");
 			}
-			var isUserExist = _userRepository.GetUserByID(node.OwnerId);
+			var isUserExist = await _userRepository.GetByIDAsync(node.OwnerId);
 			if (isUserExist != null)
-			{				
-				var toDo = _mapper.Map<CreateToDoDTO, ToDoNode>(node);
-				var allList = _todorepository.GetList();
-				int maxID = 0;
-				try
-				{
-					 maxID = allList.Max(x => x.Id);
-				}
-				catch (Exception)
-				{
-					throw;
-				}				
+			{
+				var toDo = _mapper.Map<CreateToDoDTO, ToDo>(node);
 
 				toDo.UpdatedDate = DateTime.UtcNow;
 				toDo.CreatedDate = DateTime.UtcNow;
-				toDo.Id = maxID + 1;
-				return _todorepository.Add(toDo);
+
+				return await _todorepository.AddAsync(toDo, cancellationToken);
 			}
-			Log.Error("test Log2");
-			throw new Exception($"No such user where ID = {node.OwnerId}");
+			throw new BadRequestException("No Such User");
 		}
 
-		public ToDoNode UpdateToDo(UpdateToDoDTO node)
+		public async Task<ToDo> UpdateToDoAsync(UpdateToDoDTO node, CancellationToken cancellation = default)
 		{
-			var isUserExist = _userRepository.GetUserByID(node.OwnerId);
-			var isToDoIDExist = _todorepository.SingleOrDefault(n=>n.Id == node.ID);
+			Log.Error("UpdateToDoAsync Error");
+			Log.Information("enter in UpdateToDoAsync");
+			var isUserExist = await _userRepository.GetByIDAsync(node.OwnerId);
+			var isToDoIDExist = await _todorepository.SingleOrDefaultAsync(n => n.Id == node.ID);
 
 			if (isUserExist != null && isToDoIDExist != null)
 			{
-				var toDo = _mapper.Map<UpdateToDoDTO, ToDoNode>(node);				
-				toDo.UpdatedDate = DateTime.UtcNow;
-				var toDoEntity = _todorepository.Update(toDo);
+				var toDo = _mapper.Map<UpdateToDoDTO, ToDo>(node);
+				var forUpdate = _mapper.Map(node, isToDoIDExist);
+				forUpdate.UpdatedDate = DateTime.UtcNow;
+				var toDoEntity = await _todorepository.UpdateAsync(forUpdate);
 				return toDoEntity;
 			}
-			throw new Exception($"No such ToDo id or User id \n ToDo ID = {node.ID} \n user ID = {node.OwnerId} ");
+			throw new NotFoundException($"No such ToDo id or User id \n ToDo ID = {node.ID} \n user ID = {node.OwnerId} ");
 		}
 
-		public bool DeleteToDo(int id)
+		public async Task<ToDo?> UpdateLabelAsync(UpdateToDoLabelDTO label, CancellationToken cancellation = default)
 		{
-			var nodeForDelete = GetByID(id);
-			if (nodeForDelete != null) 
+			var validator = new UpdateLabelToDoValidator();
+			var validatorResult = validator.Validate(label);
+
+			if (!validatorResult.IsValid)
 			{
-				_todorepository.Delete(nodeForDelete);
+				throw new BadRequestException("Wrong Label");
+			}
+
+			var node = await GetByIDAsync(label.ID);
+			if (node != null)
+			{
+				var toDo = _mapper.Map<UpdateToDoLabelDTO, ToDo>(label);
+
+				return await _todorepository.UpdateAsync(toDo);
+			}
+			throw new NotFoundException($"Not found ID = {label.ID}");
+		}
+
+		public async Task<bool> DeleteToDoAsync(int id, CancellationToken cancellation = default)
+		{
+			Log.Error("DeleteToDoAsync Error");
+			Log.Information("enter in DeleteToDoAsync");
+
+			var nodeForDelete = await GetByIDAsync(id);
+			if (nodeForDelete != null)
+			{
+				await _todorepository.DeleteAsync(nodeForDelete);
+				Log.Information("delete" + nodeForDelete);
 				return true;
 			}
-			return false;
-			
+
+			Log.Error($"Delete Error user id {id}");
+
+			throw new NotFoundException($"user {id}");
 		}
 
-		public ToDoNode? GetByID(int id)
-		{			
-			return _todorepository.SingleOrDefault(n => n.Id == id);
-		}
-
-		public bool IsDone(int id)
+		public async Task<bool> IsDoneAsync(int id, CancellationToken cancellation = default)
 		{
-			var node = GetByID(id);			
+			var node = await GetByIDAsync(id);
 			if (node != null)
 			{
 				node.IsDone = true;
 				return true;
 			}
-			throw new Exception("Not fount ID");
+			throw new NotFoundException($"{id} not found");
 		}
 
-		public ToDoNode? UpdateLabel(UpdateToDoLabelDTO label)
+		public async Task<int> CountAsync(string? nameFreeText, CancellationToken cancellation = default)
 		{
-			var validator = new UpdateLabeToDoValidator();
-			var validatorResult = validator.Validate(label);
-
-			if (!validatorResult.IsValid)
-			{
-				throw new Exception($"Not valid Label");
-			}
-
-			var node = GetByID(label.ID);
-			if (node != null) 
-			{
-				var toDo = _mapper.Map<UpdateToDoLabelDTO, ToDoNode>(label);
-	
-				return _todorepository.Update(toDo);
-			}		
-			throw new Exception($"Not fouont ID = {label.ID}");
+			return await _todorepository.CountAsync(nameFreeText == null ? null : n => n.Label.Contains(nameFreeText), cancellation);
 		}
-
-		public int Count (string? nameFreeText) 
-		{ 
-			return _todorepository.Count(nameFreeText == null ? null:n=>n.Label.Contains(nameFreeText));
-		}
-
 	}
 }
-
-

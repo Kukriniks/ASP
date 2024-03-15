@@ -5,10 +5,10 @@ namespace User.Services
 {
 	public interface IUserServices
 	{
-		IReadOnlyCollection<UserNode> GetList(int? offset, string? nameFreeText, int? limit = 10);
-		UserNode? GetUserByID(int id);
-		UserNode AddUser(UserNode node);
-		UserNode UpdateUser(UserNode node);
+		IReadOnlyCollection<Common.Domain.User> GetList(int? offset, string? nameFreeText, int? limit = 10);
+		Common.Domain.User? GetUserByID(int id);
+		Common.Domain.User AddUser(Common.Domain.User node);
+		Common.Domain.User UpdateUser(Common.Domain.User node);
 		bool DeleteUser(int id);
 	}
 }

@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Common.Domain;
-
 
 namespace ToDo.BL.Mapping
 {
@@ -8,9 +6,9 @@ namespace ToDo.BL.Mapping
 	{
 		public AutoMapperProfile() 
 		{
-			CreateMap<CreateToDoDTO, ToDoNode>();
-			CreateMap<UpdateToDoDTO, ToDoNode>();
-			CreateMap<UpdateToDoLabelDTO, ToDoNode>();
+			CreateMap<CreateToDoDTO, Common.Domain.ToDo>();
+			CreateMap<UpdateToDoDTO, Common.Domain.ToDo>();
+			CreateMap<UpdateToDoLabelDTO, Common.Domain.ToDo>();
 		}
 	}
 }

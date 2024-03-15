@@ -18,7 +18,7 @@
     <ProjectReference Include="..\Common\Common.Domain\Common.Domain.csproj" />
     <ProjectReference Include="..\Common\Common.Repositories\Common.Repositories.csproj" />
     <ProjectReference Include="..\ToDo.Domain\ToDo.Domain.csproj" />
-    <ProjectReference Include="..\Users\Users.Service\Users.Service.csproj" />
+    <ProjectReference Include="..\Users.BL\Users.BL.csproj" />
   </ItemGroup>
 
 </Project>

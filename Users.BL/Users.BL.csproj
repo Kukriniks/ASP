@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common.BL\Common.BL.csproj" />
     <ProjectReference Include="..\Common\Common.Repositories\Common.Repositories.csproj" />
-    <ProjectReference Include="..\Users\Users.Service\Users.Service.csproj" />
   </ItemGroup>
 
 </Project>

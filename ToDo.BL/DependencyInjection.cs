@@ -14,8 +14,8 @@ namespace ToDo.BL
 		{
 			services.AddAutoMapper(typeof(AutoMapperProfile));
 			services.AddTransient<IToDoServices, ToDoServices>();
-			services.AddTransient<IBaseRepository<UserNode>, SQLBaseRepository<UserNode>>();
-			services.AddTransient<IBaseRepository<ToDoNode>, BaseRepository<ToDoNode>>();
+			services.AddTransient<IBaseRepository<Common.Domain.User>, SQLBaseRepository<Common.Domain.User>>();
+			services.AddTransient<IBaseRepository<Common.Domain.ToDo>, SQLBaseRepository<Common.Domain.ToDo>>();
 			services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() }, includeInternalTypes: true);
 			return services;
 		}

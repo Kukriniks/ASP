@@ -5,15 +5,15 @@ namespace User.Services
 {
 	public class UserServices : IUserServices
 	{
-		private  readonly IBaseRepository<UserNode> _userRepository ;
+		private  readonly IBaseRepository<Common.Domain.User> _userRepository ;
 		
-        public UserServices(IBaseRepository<UserNode> userRepository)
+        public UserServices(IBaseRepository<Common.Domain.User> userRepository)
         {
 			_userRepository = userRepository;
 
 		}
 
-        public UserNode AddUser(UserNode user)
+        public Common.Domain.User AddUser(Common.Domain.User user)
 		{
 			return _userRepository.Add(user);			
 		}
@@ -24,7 +24,7 @@ namespace User.Services
 			return _userRepository.Delete(userForeDelet);
 		}
 
-		public IReadOnlyCollection<UserNode> GetList(int? offset, string? nameFreeText = null, int? limit = 10)
+		public IReadOnlyCollection<Common.Domain.User> GetList(int? offset, string? nameFreeText = null, int? limit = 10)
 		{
 			return _userRepository.GetList(
 				offset,
@@ -33,12 +33,12 @@ namespace User.Services
 				n => n.Id);
 		}
 
-		public UserNode? GetUserByID(int id)
+		public Common.Domain.User? GetUserByID(int id)
 		{
 			return _userRepository.SingleOrDefault(u => u.Id==id);
 		}
 
-		public UserNode UpdateUser(UserNode user)
+		public Common.Domain.User UpdateUser(Common.Domain.User user)
 		{
 			return _userRepository.Update(user);
 		}

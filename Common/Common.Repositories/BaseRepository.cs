@@ -74,5 +74,34 @@ namespace Common.Repositories
 			return _data.Remove(node);
 		}
 
-    }
+		public Task<TEntity[]> GetAllAsync(int? offset = null, int? limit = null, Expression<Func<TEntity, bool>>? predicate = null, Expression<Func<TEntity, object>>? orderBy = null, bool? descending = null, CancellationToken cancellationToken = default)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<int> CountAsync(Expression<Func<TEntity, bool>>? predicate = null, CancellationToken cancellationToken = default)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<TEntity> AddAsync(TEntity node, CancellationToken cancellationToken = default)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<TEntity> UpdateAsync(TEntity node, CancellationToken cancellationToken = default)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<bool> DeleteAsync(TEntity node, CancellationToken cancellationToken = default)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

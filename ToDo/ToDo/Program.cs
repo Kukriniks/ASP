@@ -6,8 +6,7 @@ using Serilog;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using ToDo.BL;
 using ToDo.BL.Mapping;
-
-using User.Services;
+using Users.BL;
 
 Log.Logger = new LoggerConfiguration()
 	.MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Information)
@@ -23,10 +22,10 @@ try
 	// Add services to the container.
 
 	builder.Services.AddControllers();
-	builder.Services.AddTransient<IUserServices, UserServices>();
 	builder.Services.AddFluentValidationAutoValidation();
 	builder.Services.AddEndpointsApiExplorer();
 	builder.Services.AddToDoServices();
+	builder.Services.AddUserServices();
 	builder.Services.AddSwaggerGen();
 	builder.Host.UseSerilog();
 	builder.Services.AddToDoDatabase(builder.Configuration);
@@ -50,7 +49,6 @@ try
 }
 catch (Exception e)
 {
-
 	Log.Error(e, "Run Error");
 	throw;
 }
