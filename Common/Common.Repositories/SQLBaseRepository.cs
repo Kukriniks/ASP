@@ -35,13 +35,15 @@ namespace Common.Repositories
 			return await  _applicationDBContext.SaveChangesAsync() > 0;
 		}
 
-		public async Task<TEntity[]> GetAllAsync(int? offset = null, 
-												int? limit = null,
-												Expression<Func<TEntity,
-												bool>>? predicate = null,
-												Expression<Func<TEntity, object>>? orderBy = null, 
-												bool? descending = null, 
-												CancellationToken cancellationToken = default)
+		public async Task<TEntity[]> GetAllAsync
+			(int? offset = null, 
+			int? limit = null,
+			Expression<Func<TEntity,
+			bool>>? predicate = null,
+			Expression<Func<TEntity, object>>? orderBy = null, 
+			bool? descending = null, 
+			CancellationToken cancellationToken = default)
+
 		{
 			var querible = _applicationDBContext.Set<TEntity>().AsQueryable();
 			if (predicate != null)
