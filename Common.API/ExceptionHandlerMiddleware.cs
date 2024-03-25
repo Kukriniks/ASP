@@ -36,7 +36,7 @@ namespace Common.API
 						result = badRequestException.Message;
 						break;
 
-						case ForbiddenException forbiddenException:
+					case ForbiddenException forbiddenException:
 							statusCode = HttpStatusCode.Forbidden;
 							result = forbiddenException.Message;
 							break;
