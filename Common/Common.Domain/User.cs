@@ -8,7 +8,7 @@
 
 		public string Login { get; set; } = default!;
 
-		public string Password { get; set; } = default!;
+		public string PasswordHash { get; set; } = default!;
 
 		public ICollection<ToDo> ToDos { get; set; } = default!;
 

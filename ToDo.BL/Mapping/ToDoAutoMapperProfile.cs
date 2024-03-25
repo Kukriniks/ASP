@@ -1,10 +1,11 @@
 ﻿using AutoMapper;
 
+
 namespace ToDo.BL.Mapping
 {
-	public class AutoMapperProfile : Profile
+	public class ToDoAutoMapperProfile : Profile
 	{
-		public AutoMapperProfile() 
+		public ToDoAutoMapperProfile() 
 		{
 			CreateMap<CreateToDoDTO, Common.Domain.ToDo>();
 			CreateMap<UpdateToDoDTO, Common.Domain.ToDo>();

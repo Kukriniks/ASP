@@ -23,6 +23,7 @@ namespace Common.Repositories
 			modelBuilder.Entity<User>().Property(n => n.Name).HasMaxLength(200).IsRequired();
 			modelBuilder.Entity<User>().HasIndex(n => n.Login).IsUnique();
 
+
 			modelBuilder.Entity<ToDo>()
 				.HasOne(u => u.Owner)
 				.WithMany(t => t.ToDos)

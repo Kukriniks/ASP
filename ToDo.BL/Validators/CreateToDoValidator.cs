@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
 
 namespace ToDo.BL.Validators
-
 {
 	public  class CreateToDoValidator : AbstractValidator<CreateToDoDTO>
 	{

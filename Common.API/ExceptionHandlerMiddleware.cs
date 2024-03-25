@@ -35,6 +35,12 @@ namespace Common.API
 						statusCode = HttpStatusCode.BadRequest;
 						result = badRequestException.Message;
 						break;
+
+						case ForbiddenException forbiddenException:
+							statusCode = HttpStatusCode.Forbidden;
+							result = forbiddenException.Message;
+							break;
+
 					default:
 						result = e.Message;
 						break;
@@ -46,6 +52,5 @@ namespace Common.API
 				await httpContext.Response.WriteAsync(result);	
 			}
 		}
-
     }
 }

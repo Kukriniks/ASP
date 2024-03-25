@@ -1,11 +1,9 @@
 
 using Common.API;
-using Common.Domain;
 using Common.Repositories;
 using Serilog;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 using ToDo.BL;
-using ToDo.BL.Mapping;
 using Users.BL;
 
 Log.Logger = new LoggerConfiguration()
@@ -24,13 +22,15 @@ try
 	builder.Services.AddControllers();
 	builder.Services.AddFluentValidationAutoValidation();
 	builder.Services.AddEndpointsApiExplorer();
+
 	builder.Services.AddToDoServices();
 	builder.Services.AddUserServices();
 	builder.Services.AddSwaggerGen();
 	builder.Host.UseSerilog();
 	builder.Services.AddToDoDatabase(builder.Configuration);
-	var app = builder.Build();
 
+	var app = builder.Build();
+	app.UseMiddleware<ExceptionHandlerMiddleWare>();
 	// Configure the HTTP request pipeline.
 	if (app.Environment.IsDevelopment())
 	{
@@ -43,7 +43,6 @@ try
 	app.UseAuthorization();
 
 	app.MapControllers();
-	app.UseMiddleware<ExceptionHandlerMiddleWare>();
 
 	app.Run();
 }
